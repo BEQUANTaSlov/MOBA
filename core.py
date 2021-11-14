@@ -46,43 +46,44 @@ while alpha <= 1:
 
     user = api.get_user(screen_name = "nytimes")
     NYT_ID = user.id_str
+    try:
+        for tweet in API.user_timeline(user_id = NYT_ID, count=1, since_id = nytimeslatesttweetID, include_rts = False, truncated = False, tweet_mode = "extended"):
 
-    for tweet in API.user_timeline(user_id = NYT_ID, count=1, since_id = nytimeslatesttweetID, include_rts = False, truncated = False, tweet_mode = "extended"):
+            full_text = tweet.full_text
+            tweets = []
+            count = 1
+            print(count)
+            count += 1
 
-        full_text = tweet.full_text
-        tweets = []
-        count = 1
-        print(count)
-        count += 1
+            import re
+            nytTextOnly = re.sub(r' https://t.co/\w{10}', '', tweet.full_text)
 
-        import re
-        nytTextOnly = re.sub(r' https://t.co/\w{10}', '', tweet.full_text)
+            #print(tweet)
+            nytimesdata = {
+                "Tweet ID": tweet.id_str,
+                "timestamp": tweet.created_at,
+                "Publication": "The New York Times",
+                #"Content": tweet.text,
+                "Content": nytTextOnly,
+                #"Article Link": tweet.expanded_url,
+                "Full Content": full_text,
+            }
 
-        #print(tweet)
-        nytimesdata = {
-            "Tweet ID": tweet.id_str,
-            "timestamp": tweet.created_at,
-            "Publication": "The New York Times",
-            #"Content": tweet.text,
-            "Content": nytTextOnly,
-            #"Article Link": tweet.expanded_url,
-            "Full Content": full_text,
-        }
+            print (nytimesdata)
 
-        print (nytimesdata)
-
-        nytimeslatesttweetID = tweet.id_str
+            nytimeslatesttweetID = tweet.id_str
 
 
-        #   NYT ANALYSIS
-        stop_words = set(stopwords.words('english'))
-        nlp = stanza.Pipeline('en')
-        txt = nytTextOnly
+            #   NYT ANALYSIS
+            stop_words = set(stopwords.words('english'))
+            nlp = stanza.Pipeline('en')
+            txt = nytTextOnly
 
-        print(aspect_sentiment_analysis(txt, stop_words, nlp))
+            print(aspect_sentiment_analysis(txt, stop_words, nlp))
 
-    #nytimes()
-
+        #nytimes()
+    except:
+        continue
 
     ##WSJ
     ##WSJ
@@ -92,31 +93,34 @@ while alpha <= 1:
     user = api.get_user(screen_name = "wsj")
     WSJ_ID = user.id_str
 
-    for tweet in API.user_timeline(user_id = WSJ_ID, count=1, since_id = WSJlatesttweetID, include_rts = False, truncated = False, tweet_mode = "extended"):
+    try:
+        for tweet in API.user_timeline(user_id = WSJ_ID, count=1, since_id = WSJlatesttweetID, include_rts = False, truncated = False, tweet_mode = "extended"):
 
-        tweets = []
-        count = 1
-        print(count)
-        count += 1
+            tweets = []
+            count = 1
+            print(count)
+            count += 1
 
-        full_text = tweet.full_text
-        import re
-        nytTextOnly = re.sub(r' https://t.co/\w{10}', '', tweet.full_text)
+            full_text = tweet.full_text
+            import re
+            wsjTextOnly = re.sub(r' https://t.co/\w{10}', '', tweet.full_text)
 
-        #print(tweet)
-        WSJdata = {
-            "Tweet ID": tweet.id_str,
-            "timestamp": tweet.created_at,
-            "Publication": "The Wall Street Journal",
-            #"Content": tweet.text,
-            "Content": nytTextOnly,
-            #"Article Link": tweet.expanded_url,
-            "Full Content": full_text,
-        }
+            #print(tweet)
+            WSJdata = {
+                "Tweet ID": tweet.id_str,
+                "timestamp": tweet.created_at,
+                "Publication": "The Wall Street Journal",
+                #"Content": tweet.text,
+                "Content": wsjTextOnly,
+                #"Article Link": tweet.expanded_url,
+                "Full Content": full_text,
+            }
 
-        print (WSJdata)
+            print (WSJdata)
 
-        WSJlatesttweetID = tweet.id_str
+            WSJlatesttweetID = tweet.id_str
+    except:
+        continue
 
     alpha = alpha + 1
     print ("Round ")
