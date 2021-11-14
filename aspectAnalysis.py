@@ -6,6 +6,7 @@ from nltk.corpus import wordnet
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer 
 import stanfordnlp
+import stanza
 
 
 
@@ -59,13 +60,13 @@ def aspect_sentiment_analysis(txt, stop_words, nlp):
         dep_node = []
         for dep_edge in doc.sentences[0].dependencies:
             dep_node.append([dep_edge[2].text, dep_edge[0].id, dep_edge[1]])
-
-        # Coverting it into appropriate format
         for i in range(0, len(dep_node)):
             if (int(dep_node[i][1]) != 0):
                 dep_node[i][1] = newwordList[(int(dep_node[i][1]) - 1)]
+        
         print(dep_node)
-
+        # Coverted it into appropriate format
+        
         featureList = []
         categories = []
         for i in taggedList:

@@ -17,6 +17,8 @@ from nltk.stem.wordnet import WordNetLemmatizer
 #import stanfordnlp
 #stanfordnlp.download('en')
 from aspectAnalysis import aspect_sentiment_analysis
+import stanza
+stanza.download('en')
 
 CONSUMER_KEY = keys['consumer_key']
 CONSUMER_SECRET = keys['consumer_secret']
@@ -33,7 +35,7 @@ nytimeslatesttweetID = 1459588611935023104
 WSJlatesttweetID = 1459588611935023104
 
 alpha = 0
-while alpha <= 100:
+while alpha <= 1:
 
     #NEW YORK TIMES
     #NEW YORK TIMES
