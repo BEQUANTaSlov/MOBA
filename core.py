@@ -4,6 +4,19 @@ import tweepy
 from keys import keys
 import pandas as pd
 import time
+import pandas as pd
+import numpy as np
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+from nltk.corpus import stopwords
+from nltk.corpus import wordnet
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.stem.wordnet import WordNetLemmatizer 
+#import stanfordnlp
+#stanfordnlp.download('en')
+from aspectAnalysis import aspect_sentiment_analysis
 
 CONSUMER_KEY = keys['consumer_key']
 CONSUMER_SECRET = keys['consumer_secret']
@@ -57,6 +70,14 @@ while alpha <= 100:
         print (nytimesdata)
 
         nytimeslatesttweetID = tweet.id_str
+
+
+        #   NYT ANALYSIS
+        stop_words = set(stopwords.words('english'))
+        nlp = stanza.Pipeline('en')
+        txt = nytTextOnly
+
+        print(aspect_sentiment_analysis(txt, stop_words, nlp))
 
     #nytimes()
 
